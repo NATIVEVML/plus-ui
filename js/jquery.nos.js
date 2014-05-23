@@ -1,7 +1,7 @@
 /*
 * NOS-UI
 * A form component library
-* Version: "0.9.24"
+* Version: "0.9.25"
 * Jamy Golden
 * https://github.com/NATIVEVML/NOS-UI
 * License: MIT
@@ -670,7 +670,7 @@ $.fn.extend({
 					o.dom.$fauxEl.removeClass(o.elAttrNames.checkedClass);
 				};
 
-				if (o._stackOverflow <= 1) {
+				if (o._stackOverflow <= 1 && isFaux === true) {
 					o.dom.$el.trigger('change');
 
 					if (typeof o.onChange === 'function') {
@@ -728,7 +728,9 @@ $.fn.extend({
 
 			function events(){
 				o.dom.$el.on({
-					'change.nosui': reflectChange
+					'change.nosui': function(){
+						reflectChange(true);
+					}
 				});
 
 				o.dom.$fauxEl.on({
@@ -860,7 +862,7 @@ $.fn.extend({
 				};
 			};
 
-			function reflectChange(e){
+			function reflectChange(isFaux){
 				// stop recursive triggering
 				o.dom.$el.off({
 					'change.nosui': reflectChange
@@ -886,7 +888,7 @@ $.fn.extend({
 				// Check radio
 				o.dom.$fauxEl.data(NosUIApp.namespace + '-checked', true).addClass(o.elAttrNames.checkedClass);
 
-				if (o._stackOverflow <= 1) {
+				if (o._stackOverflow <= 1 && isFaux === true) {
 					o.dom.$el.trigger('change');
 
 					if (typeof o.onChange === 'function') {
@@ -922,7 +924,7 @@ $.fn.extend({
 						// Check radio
 						o.dom.$el.prop('checked', true);
 
-						reflectChange(e);
+						reflectChange(true);
 					},
 					'mousedown.nosui': function(e) {
 						// Apply disabled styled if disabled
