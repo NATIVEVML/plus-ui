@@ -653,7 +653,7 @@ $.fn.extend({
 				};
 			}
 
-			function reflectChange(e){
+			function reflectChange(isFaux){
 				// stop recursive triggering
 				o.dom.$el.off({
 					'change.nosui': reflectChange
